@@ -54,4 +54,23 @@ try {
   console.log(error);
 }
 
+try {
+  router.post("/signin", async (req, res) => {
+    const { email, password } = req.body;
+
+    if (!email || !password) {
+      return res.status(400).json({ message: "eroor fill mising" });
+    }
+
+    const userexist = await User.findOne({ email: email });
+    if (userexist) {
+      res.status(200).json({ message: "login successful" });
+    } else {
+      res.status(400).json({ message: "error invaild data" });
+    }
+  });
+} catch (error) {
+  console.log(error);
+}
+
 module.exports = router;
