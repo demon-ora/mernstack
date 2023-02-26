@@ -7,11 +7,10 @@ dotenv.config({ path: "./config.env" });
 
 const PORT = process.env.PORT;
 
-require("./db/conn.js");
-app.get("/", (req, res) => {
-  res.send("hello world");
-});
+app.use(express.json());
 
+require("./db/conn.js");
+app.use(require("./router/auth"));
 app.get("/contact", (req, res) => {
   res.send("hello contact");
 });
