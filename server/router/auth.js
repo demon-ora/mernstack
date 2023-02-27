@@ -1,5 +1,6 @@
 const express = require("express");
 const router = express.Router();
+const bcrypt = require("bcryptjs");
 
 const User = require("../model/userSchema");
 require("../db/conn");
@@ -66,9 +67,15 @@ try {
 
     const userexist = await User.findOne({ email: email });
     if (userexist) {
-      res.status(200).json({ message: "login successful" });
+      const ismatch = await bcrypt.compare(password, userexist.password);
+
+      if (ismatch) {
+        res.status(200).json({ message: "login successful" });
+      } else {
+        res.status(400).json({ message: "error invaild data" });
+      }
     } else {
-      res.status(400).json({ message: "error invaild data" });
+      res.status(400).json({ message: "email not found" });
     }
   });
 } catch (error) {
