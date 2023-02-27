@@ -44,6 +44,8 @@ try {
     const userexist = await User.findOne({ email: email });
     if (userexist) {
       res.status(422).json({ message: "user already exist" });
+    } else if (password != cpassword) {
+      res.status(200).json({ message: "not match " });
     } else {
       const user = new User({ name, email, number, work, password, cpassword });
       user.save();
